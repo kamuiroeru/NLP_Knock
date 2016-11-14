@@ -1,11 +1,11 @@
-import sys
+from sys import argv
 
-with open('hightemp.txt') as f:
+with open(argv[1]) as f:
     i = 0
     l = []
     for s in reversed(list(f)):
         i += 1
-        if int(sys.argv[1]) < i:
+        if int(argv[2]) < i:
             break
         l.insert(0, s.strip())
     print('\n'.join(l))

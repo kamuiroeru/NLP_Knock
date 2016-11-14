@@ -1,6 +1,8 @@
 import re
+from sys import argv
 
-f = open('hightemp.txt')
+
+f = open(argv[1])
 f1 = open('col1.txt', 'w')
 f2 = open('col2.txt', 'w')
 

@@ -1,8 +1,10 @@
 import re
 from collections import defaultdict
+from sys import argv
+
 
 lines = []
-with open('hightemp.txt', 'r') as f:
+with open(argv[1], 'r') as f:
     lines = f.readlines()
 
 dic = defaultdict(list)

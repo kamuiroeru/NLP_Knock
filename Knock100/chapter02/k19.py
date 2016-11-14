@@ -1,9 +1,10 @@
 import re
 from collections import defaultdict
+from sys import argv
 
 dic = defaultdict(list)
 lines = []
-with open('hightemp.txt', 'r') as f:
+with open(argv[1], 'r') as f:
     lines = f.readlines()
 
 for i, line in zip(range(len(lines)), lines):

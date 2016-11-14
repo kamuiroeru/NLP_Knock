@@ -2,5 +2,7 @@
 #     while(True):
 #         s = f.readline();
 
-num_lines = sum([1 for line in open('hightemp.txt')])
+from sys import argv
+
+num_lines = sum([1 for line in open(argv[1])])
 print(num_lines)
