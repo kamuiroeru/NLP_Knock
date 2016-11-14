@@ -1,0 +1,7 @@
+11 diff <(cat hightemp.txt|tr "\t" " ") <(python k11.py)
+12 diff <(cat col1.txt) <(cut -f1 hightemp.txt)
+13 diff <(paste -d \\t col1.txt col2.txt) <(python k13.py)
+14 diff <(head -n 5 hightemp.txt) <(python k14.py 5)
+15 diff <(tail -n 6 hightemp.txt) <(python k15.py 6)
+16
+17 diff

@@ -1,10 +1,9 @@
-# 動きません
-
 import re
+from operator import itemgetter
 
-newList = []
+lines = []
 with open('hightemp.txt', 'r') as f:
-    newList = [f.readlines()[key] for key, value in sorted({i: re.split('[ \t]+', line)[2] for i, line in zip(range(len(f.readlines())), f.readlines())}.items(), key=lambda x:x[1])]
+    lines = [re.split('[ \t]', line) for line in f.readlines()]
 
-for l in newList:
-    print(l)
+for l in sorted(lines, key=itemgetter(2), reverse=True):
+    print('\t'.join(l), end='')

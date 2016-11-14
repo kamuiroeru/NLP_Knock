@@ -9,4 +9,4 @@ url = 'http://ja.wikipedia.org/w/api.php?format=json&action=query&prop=imageinfo
 resp = requests.get(url).json()
 a = resp['query']['pages']['-1']['imageinfo'][0]['url']
 print(a)
-# pprint(resp.json())
+pprint(resp)

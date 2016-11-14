@@ -9,3 +9,5 @@ with open('hightemp.txt') as f:
             break
         l.insert(0, s.strip())
     print('\n'.join(l))
+
+    # リングバッファと配列
