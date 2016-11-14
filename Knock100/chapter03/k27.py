@@ -20,4 +20,3 @@ for line in k20.read_jwc_json()['イギリス'].split('\n'):
         dic[r[0]] = re.sub('\'|\"|\[|\]', '', r[1])
 
 pprint(dic)
-print(len(dic))
