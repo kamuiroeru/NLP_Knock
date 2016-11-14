@@ -17,5 +17,3 @@ with open('out.json') as fi:
                 # print(j)
     print(nouns_sa)
     print(len(nouns_sa))
-
-    # 104148行目
