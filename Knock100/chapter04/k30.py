@@ -1,6 +1,5 @@
 from pprint import pprint
-
-import MeCab
+import sys
 import re
 
 #     0    1         2          3          4     5     6    7   8   9
@@ -8,13 +7,14 @@ import re
 
 outer_list = []
 inner_list = []
-with open('neko.txt.mecab') as fi:
+with open(sys.argv[1]) as fi:
     for line in fi.readlines():
         mapping = {}
         element = re.split('[,\t]', line.strip())
         if element[0] == 'EOS' or len(element) < 2:
             inner_list.append({})
             outer_list.append(inner_list)
+            inner_list = []
             continue
         mapping['surface'] = element[0]
         mapping['base'] = element[7]
