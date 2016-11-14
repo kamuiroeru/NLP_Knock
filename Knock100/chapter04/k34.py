@@ -13,6 +13,9 @@ with open('out.json') as fi:
             j += 1
             if len(morpheme) != 0 and morpheme['pos1'] == '連体化' and morpheme['base'] == 'の':
                 nouns_sa.append(sentence[i - 1]['surface'] + sentence[i]['surface'] + sentence[i + 1]['surface'])
-            print(j)
+                print(sentence[i - 1]['surface'] + sentence[i]['surface'] + sentence[i + 1]['surface'])
+                # print(j)
     print(nouns_sa)
     print(len(nouns_sa))
+
+    # 104148行目
