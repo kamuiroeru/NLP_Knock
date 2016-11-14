@@ -3,7 +3,7 @@ import MeCab
 m = MeCab.Tagger('-Ochasen')
 
 fi = open('neko.txt')
-fo = open('nekoMecab.txt', 'a')
+fo = open('neko.txt.mecab', 'a')
 
 with fi, fo:
     for line in fi.readlines():
