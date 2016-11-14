@@ -1,6 +1,7 @@
 from pprint import pprint
 import sys
 import re
+import json
 
 #     0    1         2          3          4     5     6    7   8   9
 # 表層形\t品詞,品詞細分類1,品詞細分類2,品詞細分類3,活用形,活用型,原形,読み,発音
@@ -22,3 +23,6 @@ with open(sys.argv[1]) as fi:
         mapping['pos1'] = element[2]
         inner_list.append(mapping)
 pprint(outer_list)
+
+with open(sys.argv[2], 'w') as fo:
+    json.dump(outer_list, fo)
