@@ -4,4 +4,5 @@
 14 diff <(head -n 5 hightemp.txt) <(python k14.py 5)
 15 diff <(tail -n 6 hightemp.txt) <(python k15.py 6)
 16
-17 diff
+17 diff <(python k17.py hightemp.txt) <(cat hightemp.txt|cut -f1 |sort|uniq|LC_ALL=C sort -d)
+19 diff <(python k19true.py hightemp.txt) <(cat hightemp.txt|cut -f1 |sort|uniq -c |LC_ALL=C sort -rd)
