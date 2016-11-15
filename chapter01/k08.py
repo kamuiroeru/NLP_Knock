@@ -1,11 +1,15 @@
-def cipher(input):
+def cipher(strin):
     l = []
-    for s in input:
-        a = int.from_bytes(s.encode(), 'big')
-        if a >= 97 and a <= 122:
+    for word in strin:
+        a = int.from_bytes(word.encode(), 'big')
+        if 97 <= a <= 122:
             a = 219 - a
         l.append(a.to_bytes(4, 'big').decode()[-1])
     return ''.join(l)
+
+    # もっとかんたんなやり方あります
+    # text_list = [chr(219 - ord(char)) if char.islower() else char for char in strin]
+    # return ''.join(text_list)
 
 
 if __name__ == '__main__':
