@@ -1,5 +1,4 @@
 import re
-from collections import defaultdict
 from operator import itemgetter
 from sys import argv
 
