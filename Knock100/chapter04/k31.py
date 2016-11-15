@@ -1,4 +1,3 @@
-from pprint import pprint
 import json
 
 with open('out.json') as fi:
