@@ -20,6 +20,8 @@ def load_mecab(strin=''):
                 mapping['pos1'] = element[2]
             inner_list.append(mapping)
             if inner_list[-1] == {}:
+                # if len(inner_list) > 1:
+                inner_list.pop()
                 outer_list.append(inner_list)
                 inner_list = []
     return outer_list
