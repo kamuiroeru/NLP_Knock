@@ -9,6 +9,7 @@ import re
 def load_mecab(strin=''):
     outer_list = []
     inner_list = []
+    EOScontinuing_count = 0
     with open(strin) as fi:
         for line in fi.readlines():
             mapping = {}
@@ -18,14 +19,16 @@ def load_mecab(strin=''):
                 mapping['base'] = element[7]
                 mapping['pos'] = element[1]
                 mapping['pos1'] = element[2]
+                EOScontinuing_count = 0
+            else:
+                EOScontinuing_count += 1
             inner_list.append(mapping)
             if inner_list[-1] == {}:
-                # if len(inner_list) > 1:
                 inner_list.pop()
-                outer_list.append(inner_list)
-                inner_list = []
+                if EOScontinuing_count > 1 or len(inner_list) > 1 and inner_list[-1]['surface'] in ['。', '」']:
+                    outer_list.append(inner_list)
+                    inner_list = []
     return outer_list
-
 
 if __name__ == '__main__':
     pprint(load_mecab(sys.argv[1]))
