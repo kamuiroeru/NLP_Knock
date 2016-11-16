@@ -13,18 +13,15 @@ def load_mecab(strin=''):
         for line in fi.readlines():
             mapping = {}
             element = re.split('[,\t]', line.strip())
-            if element[0] == 'EOS' or len(element) < 2:
-                continue
-            mapping['surface'] = element[0]
-            mapping['base'] = element[7]
-            mapping['pos'] = element[1]
-            mapping['pos1'] = element[2]
+            if element[0] != 'EOS':
+                mapping['surface'] = element[0]
+                mapping['base'] = element[7]
+                mapping['pos'] = element[1]
+                mapping['pos1'] = element[2]
             inner_list.append(mapping)
-            if element[0] == '。':
-                # inner_list.append({})
+            if inner_list[-1] == {}:
                 outer_list.append(inner_list)
                 inner_list = []
-                continue
     return outer_list
 
 
