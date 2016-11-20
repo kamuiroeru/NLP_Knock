@@ -20,7 +20,7 @@ def load_mecab(strin=''):
                 mapping['pos1'] = element[2]  # 品詞細分類1
                 inner_list.append(mapping)
             if len(inner_list) > 1 and inner_list[-1]['surface'] == '。':
-                inner_list.pop()
+                # inner_list.pop()  。を削除
                 outer_list.append(inner_list)
                 inner_list = []
     return outer_list

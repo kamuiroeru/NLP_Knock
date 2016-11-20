@@ -17,10 +17,11 @@ with open('out.json') as fi:
                 continue
             if morpheme['pos1'] == '連体化' and morpheme['base'] == 'の':
                 a_and_b2.append(sentence[i - 1]['surface'] + sentence[i]['surface'] + sentence[i + 1]['surface'])
-                # print(a_and_b2)
+                print(sentence[i - 1]['surface'] + sentence[i]['surface'] + sentence[i + 1]['surface'])
     t2 = time()
     # 4214
     # 100369
+    # 119287 2016-11-19 エラーが出た場所 at.now.txt デバッグ用
 
     print(a_and_b2)
     print(len(a_and_b2))
