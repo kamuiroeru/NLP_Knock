@@ -13,18 +13,14 @@ with open('out.json') as fi:
     a_and_b2 = []
     for sentence in sentences:
         for i, morpheme in zip(range(len(sentence)), sentence):
-            if i == 0:
-                continue
-            if morpheme['pos1'] == '連体化' and morpheme['base'] == 'の':
-                a_and_b2.append(sentence[i - 1]['surface'] + sentence[i]['surface'] + sentence[i + 1]['surface'])
-                print(sentence[i - 1]['surface'] + sentence[i]['surface'] + sentence[i + 1]['surface'])
-    t2 = time()
-    # 4214
-    # 100369
-    # 119287 2016-11-19 エラーが出た場所 at.now.txt デバッグ用
+            if morpheme['pos'] == '名詞':
+                if sentence[i + 1]['surface'] == 'の':
+                    if sentence[i + 2]['pos'] == '名詞':
+                        a_and_b2.append(
+                            ''.join([mor['surface'] for mor in [sentence[i], sentence[i + 1], sentence[i + 2]]]))
 
     for a_b in a_and_b2:
         print(a_b)
-    # print(len(a_and_b2))
-    # print('{} [sec]'.format(t1 - start))
-    # print('{} [sec]'.format(t2 - t1))
+        # print(len(a_and_b2))
+        # print('{} [sec]'.format(t1 - start))
+        # print('{} [sec]'.format(t2 - t1))
