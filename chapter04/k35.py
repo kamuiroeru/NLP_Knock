@@ -19,5 +19,6 @@ with open('out.json') as fi:
             if is_continuing:
                 nouns_sequence.append(morpheme['surface'])
 
-    print(nouns_sequences)
-    print(len(nouns_sequences))
+    for nouns_sequence in nouns_sequences:
+        print(nouns_sequence)
+    # print(len(nouns_sequences))

@@ -23,7 +23,8 @@ with open('out.json') as fi:
     # 100369
     # 119287 2016-11-19 エラーが出た場所 at.now.txt デバッグ用
 
-    print(a_and_b2)
-    print(len(a_and_b2))
+    for a_b in a_and_b2:
+        print(a_b)
+    # print(len(a_and_b2))
     # print('{} [sec]'.format(t1 - start))
     # print('{} [sec]'.format(t2 - t1))
