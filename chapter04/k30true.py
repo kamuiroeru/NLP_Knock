@@ -11,7 +11,7 @@ def load_mecab(strin=''):
     with open(strin) as fi:
         for line in fi.readlines():
             mapping = {}
-            element = re.split('[,\t]', line.strip())
+            element = re.split('[,\t]', lKine.rstrip()) #右だけ落とす重要!!
             if element[0] != 'EOS':
                 mapping['surface'] = element[0]  # 表層形
                 mapping['base'] = element[7]  # 原形（基本形）
