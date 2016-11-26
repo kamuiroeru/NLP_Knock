@@ -11,8 +11,7 @@ with open('out.json') as fi:
     sorted_list = sorted(Counter([morpheme['base'] for morpheme in sentence]).most_common(), key=itemgetter(1, 0),
                          reverse=True)
 
-data = pd.DataFrame({'単語': [l[0] for l in sorted_list],
-                     '出現頻度': [l[1] / total for l in sorted_list],
+data = pd.DataFrame({'出現頻度': [l[1] / total for l in sorted_list],
                      '順位': [i for i in range(len(sorted_list))]})
 sns.set_context("notebook", 1.3)  # 文字の大きさ変更
 # sns.set_palette("hot", 10)  # 色変更plt.xscale('log')
