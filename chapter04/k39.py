@@ -14,7 +14,7 @@ with open('out.json') as fi:
 data = pd.DataFrame({'出現頻度': [l[1] / total for l in sorted_list],
                      '順位': [i for i in range(len(sorted_list))]})
 sns.set_context("notebook", 1.3)  # 文字の大きさ変更
-# sns.set_palette("hot", 10)  # 色変更plt.xscale('log')
+# sns.set_palette("hot")  # 色変更
 plt.xscale('log')
 plt.yscale('log')
 plt.plot('順位', '出現頻度', data=data)
