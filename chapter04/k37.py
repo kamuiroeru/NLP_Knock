@@ -8,7 +8,7 @@ with open('out.json') as fi:
     sentence = json.load(fi)
     total = len(sentence)
     sorted_list_top10 = sorted(Counter([morpheme['base'] for morpheme in sentence]).most_common(), key=itemgetter(1, 0),
-                         reverse=True)[:10]
+                               reverse=True)[:10]
 
 data = pd.DataFrame({'品詞': [l[0] for l in sorted_list_top10],
                      '出現頻度': [l[1] / total for l in sorted_list_top10]})
