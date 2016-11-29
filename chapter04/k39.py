@@ -13,6 +13,7 @@ with open('out.json') as fi:
 
 data = pd.DataFrame({'出現頻度': [l[1] / total for l in sorted_list],
                      '順位': [i for i in range(len(sorted_list))]})
+print(data)
 sns.set_context("notebook", 1.3)  # 文字の大きさ変更
 # sns.set_palette("hot")  # 色変更
 plt.xscale('log')
@@ -21,5 +22,5 @@ plt.xlabel('順位')
 plt.ylabel('出現頻度')
 plt.grid(which='both')
 plt.plot('順位', '出現頻度', data=data)
-plt.title('ヒストグラム')
+plt.title('Zipfの法則')
 plt.show()
