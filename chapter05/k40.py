@@ -23,4 +23,4 @@ def create_morph(cabocha_text_lattice='neko.txt.cabocha'):
 
 
 if __name__ == '__main__':
-    print(list(map(lambda x: x.surface, create_morph()[3])))
+    print(list(map(lambda x: x.surface, create_morph()[2])))
