@@ -8,7 +8,7 @@ def pickleDump(obj=[], filename='', comp=False, level=1):
 
     if comp or '.gz' in filename:  # 圧縮指定された時
         filename = filename.rsplit('.', 1)[0]
-        gzip.open(filename + '.gz', 'wb',compresslevel=level).write(pickle_str)
+        gzip.open(filename + '.gz', 'wb', compresslevel=level).write(pickle_str)
         return
 
     filename = filename.rsplit('.', 1)[0]
