@@ -3,7 +3,9 @@ import pickle
 import re
 
 
-def pickleDump(obj=[], filename='', comp=False, level=1):
+def pickleDump(obj=None, filename='', comp=False, level=1):
+    if obj is None:
+        obj = {'hoge': 'hoge'}
     pickle_str = pickle.dumps(obj)
 
     if comp or '.gz' in filename:  # 圧縮指定された時
@@ -17,7 +19,7 @@ def pickleDump(obj=[], filename='', comp=False, level=1):
 
 
 def pickleLoad(filename=''):
-    if not re.findall('\.gz|\.pickle', filename):
+    if not re.findall("\.gz|\.pickle", filename):
         print('対応していないファイルです。')
 
     if '.gz' in filename:  # 圧縮されてた時
