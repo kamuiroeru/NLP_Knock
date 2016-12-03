@@ -8,6 +8,6 @@ class Morph:
 
 class Chunk:
     def __init__(self):
-        self.morphs = [Morph()]
+        self.morphs = []
         self.dst = None
         self.srcs = []
