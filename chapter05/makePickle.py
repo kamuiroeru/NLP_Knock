@@ -1,5 +1,6 @@
 import gzip
 import pickle
+import re
 
 
 def pickleDump(obj=[], filename='', comp=False, level=1):
@@ -7,7 +8,7 @@ def pickleDump(obj=[], filename='', comp=False, level=1):
 
     if comp or '.gz' in filename:  # 圧縮指定された時
         filename = filename.rsplit('.', 1)[0]
-        gzip.open(filename + '.gz', 'wb').write(gzip.compress(pickle_str, compresslevel=level))
+        gzip.open(filename + '.gz', 'wb',compresslevel=level).write(pickle_str)
         return
 
     filename = filename.rsplit('.', 1)[0]
@@ -16,11 +17,11 @@ def pickleDump(obj=[], filename='', comp=False, level=1):
 
 
 def pickleLoad(filename=''):
-    if '.gz' not in filename or '.pickle' not in filename:
+    if not re.findall('\.gz|\.pickle', filename):
         print('対応していないファイルです。')
 
     if '.gz' in filename:  # 圧縮されてた時
-        with gzip.open(filename) as f:
+        with gzip.open(filename, 'rb') as f:
             return pickle.loads(f.read())
 
     else:
