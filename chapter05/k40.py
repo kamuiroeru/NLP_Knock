@@ -20,7 +20,6 @@ def create_morph(cabocha_text_lattice='neko.txt.cabocha'):
                 morph.pos = elements[1]
                 morph.pos1 = elements[2]
                 inner_list.append(morph)
-
     return outer_list
 
 
