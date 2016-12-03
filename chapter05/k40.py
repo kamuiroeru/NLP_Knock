@@ -1,5 +1,4 @@
 import re
-from pprint import pprint
 
 from MyClass import Morph
 
@@ -24,4 +23,4 @@ def create_morph(cabocha_text_lattice='neko.txt.cabocha'):
 
 
 if __name__ == '__main__':
-    pprint(list(map(lambda x: x.surface, create_morph()[3])))
+    print(list(map(lambda x: x.surface, create_morph()[3])))
