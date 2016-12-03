@@ -5,10 +5,12 @@ import pickle
 def pickleDump(obj=[], filename='', comp=False, level=1):
     pickle_str = pickle.dumps(obj)
 
-    if comp:  # 圧縮指定された時
+    if comp or '.gz' in filename:  # 圧縮指定された時
+        filename = filename.rsplit('.', 1)[0]
         gzip.open(filename + '.gz', 'wb').write(gzip.compress(pickle_str, compresslevel=level))
         return
 
+    filename = filename.rsplit('.', 1)[0]
     with open(filename + '.pickle', 'wb') as f:
         f.write(pickle_str)
 
