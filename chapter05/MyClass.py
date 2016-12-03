@@ -9,5 +9,5 @@ class Morph:
 class Chunk:
     def __init__(self):
         self.morphs = Morph()
-        self.dst = 0
-        self.srcs = 0
+        self.dst = -1
+        self.srcs = -1
