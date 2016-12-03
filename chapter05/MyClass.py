@@ -1,7 +1,4 @@
-from JsonAdapter import JsonAdapter
-
-
-class Morph(JsonAdapter):
+class Morph:
     def __init__(self):
         self.surface = ''
         self.base = ''
