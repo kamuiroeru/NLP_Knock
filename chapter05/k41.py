@@ -47,8 +47,6 @@ def create_chunk(cabocha_text_lattice='neko.txt.cabocha'):
 if __name__ == '__main__':
     chunk8 = pickleLoad('outchunk.pickle')[7]
     df = pd.DataFrame(
-        [[''.join([morph.surface for morph in chunk.morphs]),
-          chunk.dst,
-          chunk.srcs] for chunk in chunk8],
-        columns=['文節', '係り先', '係り元リスト'])
+        [[''.join([morph.surface for morph in chunk.morphs]), str(chunk.dst)] for chunk in chunk8],
+        columns=['文節', '係り先'])
     print(df)
