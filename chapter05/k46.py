@@ -10,12 +10,12 @@ for bun in pickleLoad('outchunk.pickle'):
             continue
         elif '動詞' in [morph.pos for morph in chunks.morphs]:
             predicate = [morph.base for morph in chunks.morphs if morph.pos == '動詞'][0]
-            cases = []
+            cases = []  # 今度は係り元の[助詞の表層形, 助詞を含む文節] が入るリスト
             for chunks2 in [bun[src] for src in chunks.srcs]:
                 case = [(morph.surface, morph.pos) for morph in chunks2.morphs if not morph.pos == '記号']
-                if case and case[-1][1] == '助詞':  #
-                    cases.append([case[-1][0], ''.join([c[0] for c in case])])
-            cases.sort(key=itemgetter(0, 1))
+                if case and case[-1][1] == '助詞':
+                    cases.append([case[-1][0], ''.join([c[0] for c in case])])  # [助詞の表層形, 助詞を含む文節]
+            cases.sort(key=itemgetter(0, 1))  # 助詞の表層形でソート
             print(predicate + '\t'
-                  + ' '.join([case[0] for case in cases]) + '\t'
-                  + ' '.join([case[1] for case in cases]))
+                  + ' '.join([case[0] for case in cases]) + '\t'  # 助詞
+                  + ' '.join([case[1] for case in cases]))  # 助詞を含む文節
