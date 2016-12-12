@@ -3,13 +3,13 @@ from makePickle import pickleLoad
 for bun in pickleLoad('outchunk.pickle'):
     if not bun:  # bunが空（[]）の時
         continue
-    for chunks in bun:
-        if not chunks.srcs:
+    for chunk in bun:
+        if not chunk.srcs:
             continue
-        elif '動詞' in [morph.pos for morph in chunks.morphs]:
-            predicate = [morph.base for morph in chunks.morphs if morph.pos == '動詞'][0]
+        elif '動詞' in [morph.pos for morph in chunk.morphs]:
+            predicate = [morph.base for morph in chunk.morphs if morph.pos == '動詞'][0]
             cases = []  # 係り元の助詞が入るリスト
-            for chunks2 in [bun[src] for src in chunks.srcs]:  # 係り元全部に対して文節ごとに
+            for chunks2 in [bun[src] for src in chunk.srcs]:  # 係り元全部に対して文節ごとに
 
                 # 記号を取り除いて（表層形, 品詞）のタプル in リストを作る
                 case = [(morph.surface, morph.pos) for morph in chunks2.morphs if not morph.pos == '記号']

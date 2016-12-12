@@ -16,10 +16,10 @@ if not bun:
 
 G = Digraph(format='png', )
 G.attr('node', shape='circle')
-for chunks in bun:
-    if chunks.dst == -1:  # 係り先が無い時
+for chunk in bun:
+    if chunk.dst == -1:  # 係り先が無い時
         continue
-    origin = ''.join([morph.surface for morph in chunks.morphs if not morph.pos == '記号'])  # 記号を除去
-    end = ''.join([morph.surface for morph in bun[chunks.dst].morphs if not morph.pos == '記号'])  # 上に同じ
+    origin = ''.join([morph.surface for morph in chunk.morphs if not morph.pos == '記号'])  # 記号を除去
+    end = ''.join([morph.surface for morph in bun[chunk.dst].morphs if not morph.pos == '記号'])  # 上に同じ
     G.edge(origin, end)  # nodeで定義しなくても繋いだらつながる
 G.render('node/' + str(l_number), view=True, cleanup=True)
