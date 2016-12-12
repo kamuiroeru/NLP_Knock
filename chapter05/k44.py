@@ -1,8 +1,11 @@
 from sys import argv
 from makePickle import pickleLoad
 from graphviz import Digraph
+try:
+    l_number = int(argv[1])
+except IndexError as e:
+    l_number = 5
 
-l_number = int(argv[1]) or 5
 input_sentence = pickleLoad('outchunk.pickle')[l_number]
 bun = input_sentence
 
