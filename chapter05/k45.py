@@ -4,8 +4,13 @@ for bun in pickleLoad('outchunk.pickle'):
     if not bun:  # bunが空（[]）の時
         continue
     for chunks in bun:
-        if chunks.dst == -1:  # 係り先が無い時
+        if not chunks.srcs:
             continue
-        print(''.join([morph.surface for morph in chunks.morphs if not morph.pos == '記号'])
-              + '\t'
-              + ''.join([morph.surface for morph in bun[chunks.dst].morphs if not morph.pos == '記号']))
+        elif '動詞' in [morph.pos for morph in chunks.morphs]:
+            predicate = [morph.base for morph in chunks.morphs if morph.pos == '動詞'][0]
+            cases = []
+            for chunks2 in [bun[src] for src in chunks.srcs]:
+                case = [morph.surface for morph in chunks2.morphs if morph.pos == '助詞']
+                if case:
+                    cases.extend(case)
+            print(predicate + '\t' + ' '.join(sorted(cases)))
