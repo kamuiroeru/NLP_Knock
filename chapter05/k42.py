@@ -10,7 +10,6 @@ output_sentence = []
 for bun in input_sentence:
     if not bun:  # bunが空（[]）の時
         continue
-    string = ''
     strings_list = []
     for chunks in bun:
         if chunks.dst == -1:  # 係り先が無い時
