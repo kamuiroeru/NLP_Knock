@@ -9,7 +9,6 @@ bun = input_sentence
 if not bun:
     exit('空白行です。\n終了します。')
 
-strings_list = []
 G = Digraph(format='png', )
 G.attr('node', shape='circle')
 for chunks in bun:
@@ -17,6 +16,5 @@ for chunks in bun:
         continue
     origin = ''.join([morph.surface for morph in chunks.morphs if not morph.pos == '記号'])  # 記号を除去
     end = ''.join([morph.surface for morph in bun[chunks.dst].morphs if not morph.pos == '記号'])  # 上に同じ
-    strings_list.append(origin + end)
     G.edge(origin, end)  # nodeで定義しなくても繋いだらつながる
 G.render('node/' + str(l_number), view=True, cleanup=True)
