@@ -10,7 +10,7 @@ for bun in pickleLoad('outchunk.pickle'):
             predicate = [morph.base for morph in chunks.morphs if morph.pos == '動詞'][0]
             cases = []
             for chunks2 in [bun[src] for src in chunks.srcs]:
-                case = [morph.surface for morph in chunks2.morphs if morph.pos == '助詞']
-                if case:
-                    cases.extend(case)
+                case = [(morph.surface, morph.pos) for morph in chunks2.morphs if not morph.pos == '記号']
+                if case and case[-1][1] == '助詞':  #
+                    cases.append(case[-1][0])
             print(predicate + '\t' + ' '.join(sorted(cases)))
