@@ -5,9 +5,25 @@ for bun in pickleLoad('outchunk.pickle'):
         continue  # スキップ
     for chunk in bun:
         if '名詞' in [morph.pos for morph in chunk.morphs]:  # 文節に名詞が入っている時
-            tree_path = [''.join([morph.surface for morph in chunk.morphs if not morph.pos == '記号'])]
+            noun_from = ''
+            for morph in chunk.morphs:
+                if not morph.pos == '記号':
+                    if morph.pos == '名詞':
+                        noun_from += 'X'
+                    else:
+                        noun_from += morph.surface
+            until_path = []
+            # check_morphs = [(morph.surface, morph.pos) for morph in chunk.morphs]
             index = chunk.dst
             while index != -1:  # 係り先がなくなるまで
-                tree_path.append(''.join([morph.surface for morph in bun[index].morphs if not morph.pos == '記号']))
+                check_chunk = [(morph.surface, morph.pos) for morph in bun[index].morphs]
+                if '名詞' in [morph.pos for morph in bun[index].morphs]:
+                    print(' -> '.join([noun_from]+until_path+['Y']))
+                until_path.append(''.join([morph.surface for morph in bun[index].morphs]))
                 index = bun[index].dst
-            print(' -> '.join(tree_path))
+                #
+                #     tree_path.append(''.join([morph.surface for morph in bun[index].morphs if not morph.pos == '記号']))
+                #     index = bun[index].dst
+                # for part in tree_path:
+                #
+                # print(' -> '.join(tree_path))
