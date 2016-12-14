@@ -18,12 +18,12 @@ def create_chunk(cabocha_text_lattice='neko.txt.cabocha'):
         for line in f:
             status = line.split(' ')
             if len(status) == 5:  # latticeの行なら
-                chunk.srcs = temp_dic[str(index)]
+                chunk.srcs = temp_dic[index]
                 inner_list.append(chunk)
                 index += 1
                 chunk = Chunk()
                 chunk.dst = int(status[2][:-1])  # D抜いてintにキャスト
-                temp_dic[str(chunk.dst)].append(index)  # 係り元を集計
+                temp_dic[chunk.dst].append(index)  # 係り元を集計
             else:
                 if 'EOS' in line:  # EOSの時
                     chunk.srcs = temp_dic[str(index)]
