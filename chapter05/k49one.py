@@ -5,18 +5,17 @@ for bun in pickleLoad('outchunk.pickle'):
         continue  # スキップ
     for chunk in bun:
         if '名詞' in [morph.pos for morph in chunk.morphs]:  # 文節に名詞が入っている時
-            noun_from = ''
+            chunk_surface = ''
             for morph in chunk.morphs:
                 if not morph.pos == '記号':
                     if morph.pos == '名詞':
-                        noun_from += 'X'
+                        chunk_surface += 'X'
                     else:
-                        noun_from += morph.surface
-            until_path = []  # 途中の経路を溜めておく
+                        chunk_surface += morph.surface
+            tree_path = [chunk_surface]
             index = chunk.dst
             while index != -1:  # 係り先がなくなるまで
-                check_chunk = [(morph.surface, morph.pos) for morph in bun[index].morphs]
-                if '名詞' in [morph.pos for morph in bun[index].morphs]:
-                    print(' -> '.join([noun_from]+until_path+['Y']))
-                until_path.append(''.join([morph.surface for morph in bun[index].morphs]))
-                index = bun[index].dst
+                if '名詞' in
+                    tree_path.append(''.join([morph.surface for morph in bun[index].morphs if not morph.pos == '記号']))
+                    index = bun[index].dst
+            print(' -> '.join(tree_path))
