@@ -13,7 +13,6 @@ for bun in pickleLoad('outchunk.pickle'):
                     else:
                         noun_from += morph.surface
             until_path = []
-            # check_morphs = [(morph.surface, morph.pos) for morph in chunk.morphs]
             index = chunk.dst
             while index != -1:  # 係り先がなくなるまで
                 check_chunk = [(morph.surface, morph.pos) for morph in bun[index].morphs]
@@ -21,9 +20,3 @@ for bun in pickleLoad('outchunk.pickle'):
                     print(' -> '.join([noun_from]+until_path+['Y']))
                 until_path.append(''.join([morph.surface for morph in bun[index].morphs]))
                 index = bun[index].dst
-                #
-                #     tree_path.append(''.join([morph.surface for morph in bun[index].morphs if not morph.pos == '記号']))
-                #     index = bun[index].dst
-                # for part in tree_path:
-                #
-                # print(' -> '.join(tree_path))
