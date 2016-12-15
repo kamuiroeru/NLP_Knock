@@ -26,7 +26,7 @@ def create_chunk(cabocha_text_lattice='neko.txt.cabocha'):
                 temp_dic[chunk.dst].append(index)  # 係り元を集計
             else:
                 if 'EOS' in line:  # EOSの時
-                    chunk.srcs = temp_dic[str(index)]
+                    chunk.srcs = temp_dic[index]
                     inner_list.append(chunk)
                     outer_list.append(inner_list[1:])
                     chunk = Chunk()
