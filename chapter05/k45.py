@@ -15,4 +15,5 @@ for bun in pickleLoad('outchunk.pickle'):
                 case = [(morph.surface, morph.pos) for morph in chunks2.morphs if not morph.pos == '記号']
                 if case and case[-1][1] == '助詞':  # 末尾が助詞だった場合（caseが[]の場合を弾くために case and かます）
                     cases.append(case[-1][0])  # その助詞の表層形を取り出してリストに
-            print(predicate + '\t' + ' '.join(sorted(cases)))
+            if cases:
+                print(predicate + '\t' + ' '.join(sorted(cases)))
