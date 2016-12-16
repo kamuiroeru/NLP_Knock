@@ -10,4 +10,5 @@ for bun in pickleLoad('outchunk.pickle'):
             while index != -1:  # 係り先がなくなるまで
                 tree_path.append(''.join([morph.surface for morph in bun[index].morphs if not morph.pos == '記号']))
                 index = bun[index].dst
-            print(' -> '.join(tree_path))
+            if len(tree_path) > 1:
+                print(' -> '.join(tree_path))
