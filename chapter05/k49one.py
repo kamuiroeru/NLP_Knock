@@ -6,10 +6,6 @@ for bun in pickleLoad('outchunk.pickle'):
     if len(bun) <= 1:  # bun の中の文節が1節以内のとき
         continue  # スキップ
     shortest_path_from_nouns = [None] * len(bun)  # 名詞句からの最短パス
-    leave_node_to_root = False
-    paths_from_leaf = []  # 葉から根へのパス
-    paths = []  # ノードすべてから根へのパス と paths_from_leafとの対応
-    sync = -1  # 対応付けるための整数を保存（引数と合わせるために-1で初期化）
     for index, chunk in zip(range(len(bun)), bun):
 
         # 表示部
