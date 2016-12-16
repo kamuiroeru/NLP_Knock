@@ -8,20 +8,20 @@ for bun in pickleLoad('outchunk.pickle'):
     for chunk in bun:
         if not chunk.srcs:
             continue
-        elif '動詞' in [morph.pos for morph in chunk.morphs]:
-            predicate = [morph.base for morph in chunk.morphs if morph.pos == '動詞'][0]
+        elif '動詞' in chunk.morphs[0].pos:
+            predicate = chunk.morphs[0].base  # 動詞の最左
             found = False  # サ変接続+'を'が見つかったかどうか
             cases = []  # 今度は係り元の[助詞の表層形, 助詞を含む文節] が入るリスト
-            for chunks2 in [bun[src] for src in chunk.srcs]:
-                case = [(morph.surface, morph.pos, morph.pos1) for morph in chunks2.morphs if not morph.pos == '記号']
-                if case and case[-1][1] == '助詞':  # []を除去
+            for chunk2 in [bun[src] for src in chunk.srcs]:
+                case = [morph for morph in chunk2.morphs if not morph.pos == '記号']  # chunk2.morphsを記号抜きで再構築
+                if case and case[-1].pos == '助詞':  # caseが[]の場合を考慮
 
                     # 二語以上あるか確認してから 「サ変接続+'を'」の形式を探す
-                    if len(case) >= 2 and case[-1][0] == 'を' and case[-2][2] == 'サ変接続':
+                    if len(case) >= 2 and case[-1].surface == 'を' and case[-2].pos1 == 'サ変接続':
                         found = True  # 見つかった！！
-                        predicate = case[-2][0] + case[-1][0] + predicate  # 述語を更新
+                        predicate = case[-2].base + case[-1].surface + predicate  # 述語を更新
                         continue
-                    cases.append([case[-1][0], ''.join([c[0] for c in case])])  # [助詞の表層形, 助詞を含む文節]
+                    cases.append([case[-1].surface, ''.join([morph.surface for morph in case])])  # [助詞の表層形, 助詞を含む文節]
             if not found or len(cases) < 1:  # サ変接続+'を'が見つからなかった or 見つかったとしても助詞が1つしか無い時
                 continue
             cases.sort(key=itemgetter(0, 1))  # 助詞の表層形でソート
