@@ -15,16 +15,22 @@ for bun in pickleLoad('outchunk.pickle'):
                 if shortest_path_from_nouns[src]:  # Noneじゃないなら
                     related.append(shortest_path_from_nouns[src])
             if len(related) > 1:  # ここに係る最短パスが複数ある時
+                all_pair = []
                 for i, path1 in zip(range(len(related)), related):  # 全通りピックアップ
                     path2_list = related[i + 1:]
                     if path2_list:
                         for path2 in path2_list:
                             path2 = [p2.replace('X', 'Y') for p2 in path2]  # 右側のXをYに置換
-                            print('{0} | {1} | {2}'.format(
-                                ' -> '.join(path1),
-                                ' -> '.join(path2),
-                                ''.join([morph.surface for morph in bun[index].morphs if morph.pos != '記号'])
-                            ))
+                            all_pair.append([path1, path2, len(path1) + len(path2)])
+                minimum_length = min([pair[2] for pair in all_pair])  # 複数の最短パス組のうち、一番短い長さをチェック
+                all_pair = [[pair[0], pair[1]] for pair in all_pair if pair[2] == minimum_length]  # 長さが短いものだけで再構築
+                for pair in all_pair:
+                    print('{0} | {1} | {2}'.format(
+                        ' -> '.join(pair[0]),
+                        ' -> '.join(pair[1]),
+                        ''.join([morph.surface for morph in bun[index].morphs if morph.pos != '記号'])
+                    ))
+
 
         # 処理部
         if '名詞' in [morph.pos for morph in chunk.morphs]:  # 名詞が見つかれば
