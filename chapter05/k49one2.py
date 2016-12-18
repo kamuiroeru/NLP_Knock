@@ -38,22 +38,26 @@ for bun in pickleLoad('outchunk.pickle'):
                 pfl_index1 = pfl_index
             elif node2[0] in lis:
                 pfl_index2 = pfl_index
-        if not two_nodes_are_on_the_same_path:
+        if not two_nodes_are_on_the_same_path:  # 同じパス上にある時
             path1 = paths_from_leaf[pfl_index1]
             path2 = paths_from_leaf[pfl_index2]
-            meeting_node = [node for node in path1 if node in path2][0]
+            meeting_node = [node for node in path1 if node in path2][0]  # 合流地点を見つける
 
+            # 片方の合流地点までのパスの中身（表層形）のリストをつくる
             shortest_path1 = [node1[1]]
             next_index1 = bun[node1[0]].dst
             while next_index1 != meeting_node:
                 shortest_path1.append(''.join([morph.surface for morph in bun[next_index1].morphs if morph.pos != '記号']))
                 next_index1 = bun[next_index1].dst
 
+            # もう片方の合流地点までのパスの中身（表層形）のリストをつくる
             shortest_path2 = [node2[1]]
             next_index2 = bun[node2[0]].dst
             while next_index2 != meeting_node:
                 shortest_path2.append(''.join([morph.surface for morph in bun[next_index2].morphs if morph.pos != '記号']))
                 next_index2 = bun[next_index2].dst
+
+            # 出力する
             print('{0} | {1} | {2}'.format(
                 ' -> '.join(shortest_path1),
                 ' -> '.join(shortest_path2).replace('X', 'Y'),
