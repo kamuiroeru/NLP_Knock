@@ -1,86 +1,61 @@
 import re
-
+from itertools import combinations
 from makePickle import pickleLoad
 
 
-def count_path_from_leaf(i, lis):
-    count = 0
-    for l in lis:
-        if i in l:
-            count += 1
-    return count
-
-
-# node_has_childrenの子孫であるノードすべてからnode_has_children直前までのパスのリストを返す
-def create_prev_nodes(node_has_children, lis):
-    ret_list = []
-    for l, sync in lis:
-        if node_has_children in l:
+for bun in pickleLoad('outchunk.pickle'):
+    if len(bun) <= 1:  # bun の中の文節が1節以内のとき
+        continue  # スキップ
+    paths_from_leaf = []  # 葉から根へのパス
+    nouns = []
+    for i, chunk in zip(range(len(bun)), bun):
+        if not chunk.srcs:
+            index = i
             path = []
-            for i in l:
-                if i == node_has_children:
-                    break
-                path.append(i)
-            ret_list.append((path, sync))
-    return ret_list
-
-
-if __name__ == '__main__':
-    for bun in pickleLoad('outchunk.pickle'):
-        if len(bun) <= 1:  # bun の中の文節が1節以内のとき
-            continue  # スキップ
-        leave_node_to_root = False
-        paths_from_leaf = []  # 葉から根へのパス
-        paths = []  # ノードすべてから根へのパス と paths_from_leafとの対応
-        sync = -1  # 対応付けるための整数を保存（引数と合わせるために-1で初期化）
-        for i, chunk in zip(range(len(bun)), bun):
-            path = [i]
-            index = chunk.dst
             while index != -1:
                 path.append(index)
                 index = bun[index].dst
-            if not chunk.srcs:  # 係り元が無い時：葉からのパス
-                paths_from_leaf.append(path)
-                sync += 1
-            paths.append((path, sync))
+            paths_from_leaf.append(path)
+        if '名詞' in [morph.pos for morph in chunk.morphs]:
+            noun_from = ''
+            for morph in bun[i].morphs:
+                if not morph.pos == '記号':
+                    if morph.pos == '名詞':
+                        noun_from += 'X'
+                    else:
+                        noun_from += morph.surface
+            nouns.append([i, re.sub('.+X', 'X', noun_from)])  # Xの重なりとかをまとめて追加
 
-        for index in range(len(bun)):
-            if leave_node_to_root:  # これより先には合流地点が無い時
+    for node1, node2 in combinations(nouns, 2):
+        two_nodes_are_on_the_same_path = False
+        pfl_index1 = 0
+        pfl_index2 = 0
+        for pfl_index, lis in zip(range(len(paths_from_leaf)), paths_from_leaf):
+            if node1[0] in lis and node2[0] in lis:
+                two_nodes_are_on_the_same_path = True  # 同じパス上にあります。
                 break
-            count = count_path_from_leaf(index, paths_from_leaf)  # 葉からのパスが何本あるか
-            if count >= 2:  # 2本以上なら合流地点である
-                if count == len(paths_from_leaf):  # 一番根に近い合流地点
-                    leave_node_to_root = True
-                shortest_list = [None] * count
-                for path, sync in create_prev_nodes(index, paths):
-                    related_chunks = []
-                    for times, index2 in zip(range(len(path)), path):
-                        if times == 0:
-                            if '名詞' in [morph.pos for morph in bun[index2].morphs]:  # 文節に名詞が入っている時
-                                noun_from = ''
-                                for morph in bun[index2].morphs:
-                                    if not morph.pos == '記号':
-                                        if morph.pos == '名詞':
-                                            noun_from += 'X'
-                                        else:
-                                            noun_from += morph.surface
-                                related_chunks.append(re.sub('.+X', 'X', noun_from))  # Xの重なりとかをまとめて追加
-                            else:
-                                break  # パスの始まりの文節が名詞を含まなかったらbreak
-                        else:
-                            related_chunks.append(''.join([morph.surface for morph in bun[index2].morphs]))
-                    if related_chunks:
-                        shortest_list[sync] = related_chunks
-                shortest_list = [shortest for shortest in shortest_list if shortest]  # None以外を摘出
+            elif node1[0] in lis:
+                pfl_index1 = pfl_index
+            elif node2[0] in lis:
+                pfl_index2 = pfl_index
+        if not two_nodes_are_on_the_same_path:
+            path1 = paths_from_leaf[pfl_index1]
+            path2 = paths_from_leaf[pfl_index2]
+            meeting_node = [node for node in path1 if node in path2][0]
 
-                if len(shortest_list) > 1:
-                    for i, path1 in zip(range(len(shortest_list)), shortest_list):
-                        path2_list = shortest_list[i + 1:]
-                        if path2_list:
-                            for path2 in path2_list:
-                                path2 = [p2.replace('X', 'Y') for p2 in path2]
-                                print('{0} | {1} | {2}'.format(
-                                    ' -> '.join(path1),
-                                    ' -> '.join(path2),
-                                    ''.join([morph.surface for morph in bun[index].morphs if morph.pos != '記号'])
-                                ))
+            shortest_path1 = [node1[1]]
+            next_index1 = bun[node1[0]].dst
+            while next_index1 != meeting_node:
+                shortest_path1.append(''.join([morph.surface for morph in bun[next_index1].morphs if morph.pos != '記号']))
+                next_index1 = bun[next_index1].dst
+
+            shortest_path2 = [node2[1]]
+            next_index2 = bun[node2[0]].dst
+            while next_index2 != meeting_node:
+                shortest_path2.append(''.join([morph.surface for morph in bun[next_index2].morphs if morph.pos != '記号']))
+                next_index2 = bun[next_index2].dst
+            print('{0} | {1} | {2}'.format(
+                ' -> '.join(shortest_path1),
+                ' -> '.join(shortest_path2).replace('X', 'Y'),
+                ''.join([morph.surface for morph in bun[meeting_node].morphs if morph.pos != '記号'])
+            ))
