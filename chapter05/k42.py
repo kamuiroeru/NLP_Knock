@@ -1,8 +1,8 @@
 from makePickle import pickleLoad
 
 for bun in pickleLoad('outchunk.pickle'):
-    if not bun:  # bunが空（[]）の時
-        continue
+    # if not bun:  # bunが空（[]）の時
+    #     continue
     for chunk in bun:
         if chunk.dst == -1:  # 係り先が無い時
             continue
