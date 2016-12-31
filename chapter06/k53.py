@@ -1,4 +1,3 @@
-import re
 from sys import argv
 from parse import parse
 
