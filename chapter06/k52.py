@@ -5,5 +5,5 @@ with open('nlp51.out') as f:
     for word in f:
         word = word.rstrip()
         if word:
-            word_for_stem = re.sub('[^a-z]', '', word.lower())
-            print(word + '\t' + st.stem(word_for_stem))
+            # word_for_stem = re.sub('[^a-z]', '', word.lower())
+            print(word + '\t' + st.stem(word))
