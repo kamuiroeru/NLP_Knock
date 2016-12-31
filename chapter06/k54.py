@@ -9,5 +9,11 @@ except IndexError:
 for line in open(raw_text_directory):
     line = line.strip()
     word = parse('<word>{}</word>', line)
+    lemma = parse('<lemma>{}</lemma>', line)
+    pos = parse('<POS>{}</POS>', line)
     if word:
-        print(word[0])
+        print(word[0] + '\t', end='')
+    elif lemma:
+        print(lemma[0] + '\t', end='')
+    elif pos:
+        print(pos[0])
