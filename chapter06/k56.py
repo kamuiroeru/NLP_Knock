@@ -28,15 +28,11 @@ for core in dic['root']['document']['coreference']['coreference']:
             sent = int(mention['sentence'])
             start = int(mention['start'])
             end = int(mention['end'])
-            # print(sent, start)
             sentence_list[sent][start] = '「 ' + rep + ' ( ' + sentence_list[sent][start]
             sentence_list[sent][end] = ')」' + sentence_list[sent][end]
-    #     print(mention['text'])
-    # print()
 
-for lc, token_l in enumerate(sentence_list):
-    if lc:
-        print(' '.join(token_l))
+for token_l in sentence_list[1:]:
+    print(' '.join(token_l[1:]))
     # for token in token_l:
     #     print(token[1]+token[0], end='')
     # print()
