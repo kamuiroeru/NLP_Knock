@@ -19,4 +19,4 @@ for dep in dependencies[n]['dep']:
     G.node(dg['@idx'], dg['#text'])  # ちゃんとノードを作る
     G.edge(dd['@idx'], dg['@idx'])  # 矢印作る
 
-G.render('node/' + str(0), view=True, cleanup=True)
+G.render('node/' + str(n), view=True, cleanup=True)
