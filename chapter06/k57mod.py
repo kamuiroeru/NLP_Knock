@@ -17,6 +17,7 @@ for dep in dependencies[n]['dep']:
     dd, dg = dep['dependent'], dep['governor']  # 文字数削減
     G.node(dd['@idx'], dd['#text'])  # 同じ英単語でも違う場所にあったりするので
     G.node(dg['@idx'], dg['#text'])  # ちゃんとノードを作る
-    G.edge(dd['@idx'], dg['@idx'])  # 矢印作る
+    print(dep['@type'])
+    G.edge(dd['@idx'], dg['@idx'], label=dep['@type'])  # 矢印作る
 
 G.render('node/' + str(n + 1), view=True, cleanup=True)
