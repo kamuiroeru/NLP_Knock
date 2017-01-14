@@ -6,7 +6,12 @@ try:
 except IndexError:
     raw_text_directory = 'nlp.txt.xml'
 
-tree = ET.parse(raw_text_directory)  # xmlファイルを読み込んでElementTreeオブジェクトに
-mentions = tree.iter('mention')
-for mention in mentions:
-    print(mention)
+tree = ET.parse(raw_text_directory)  # xmlファイルを読み込んでElementTreeオブジクトに
+root = tree.getroot()
+hoges = tree.findall('./root/document/coreference/coreference')
+print(hoges)
+print(root.find('.//coreference'))
+coreferences = tree.iter('coreference')
+for coreference in coreferences:
+    for mention in coreference.mention:
+        print(mention)
