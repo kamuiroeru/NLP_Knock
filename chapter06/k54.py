@@ -1,10 +1,10 @@
 import pickle
 
-dic = pickle.load(open('xml.pickle', 'rb'))
 
-sentences = dic['root']['document']['sentences']['sentence']
+def load_xml():
+    return pickle.load(open('xml.pickle', 'rb'))
 
-for sentence in sentences:
+for sentence in load_xml()['root']['document']['sentences']['sentence']:
     tokens = sentence['tokens']['token']
 
     # tokenが1つしか無い時の処理
