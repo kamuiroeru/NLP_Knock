@@ -1,21 +1,13 @@
-from sys import argv
-from parse import parse
+import pickle
 
-try:
-    raw_text_directory = argv[1]
-except IndexError:
-    raw_text_directory = 'nlp.txt.xml'
+dic = pickle.load(open('xml.pickle', 'rb'))
 
-for line in open(raw_text_directory):
-    line = line.strip()
-    word = parse('<word>{}</word>', line)
-    lemma = parse('<lemma>{}</lemma>', line)
-    pos = parse('<POS>{}</POS>', line)
+sentences = dic['root']['document']['sentences']['sentence']
 
-    print('{}\t{}\t{}'.format(word[0], lemma[0], pos[0]))
-    # if word:
-    #     print(word[0] + '\t', end='')
-    # elif lemma:
-    #     print(lemma[0] + '\t', end='')
-    # elif pos:
-    #     print(pos[0])
+for sentence in sentences:
+    tokens = sentence['tokens']['token']
+    if isinstance(tokens, dict):
+        print(tokens['word'], tokens['lemma'], tokens['POS'])
+        continue
+    for t in tokens:
+        print(t['word'], t['lemma'], t['POS'])
