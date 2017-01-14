@@ -3,7 +3,7 @@ import re
 with open('nlp.txt') as f:
     sentence = ''
     for line in f:
-        findlist = list(re.finditer('(\.|;|:|\?|!){1} [A-Z]', line))  # 終端記号+スペース+大文字
+        findlist = list(re.finditer('[\.;:\?!] [A-Z]', line))  # 終端記号+スペース+大文字
         if findlist:
             top = 0
             for match in findlist:
