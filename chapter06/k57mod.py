@@ -3,7 +3,7 @@ from k54 import load_xml
 from sys import argv
 
 try:
-    n = argv[1] - 1
+    n = int(argv[1]) - 1
 except IndexError:
     n = 0
 
