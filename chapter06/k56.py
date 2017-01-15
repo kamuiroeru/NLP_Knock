@@ -27,7 +27,9 @@ for core in load_xml()['root']['document']['coreference']['coreference']:
             sentence_list[sent][start] = '「 ' + rep + ' ( ' + sentence_list[sent][start]
 
             # 参照表現の 1つ後ろ の先頭に ')」' を追加
-            sentence_list[sent][end] = ')」' + sentence_list[sent][end]
+            sentence_list[sent][end] = ')」 ' + sentence_list[sent][end]
 
 for token_l in sentence_list[1:]:
-    print(re.sub(r' ([,.;:?!])', r'\1', ' '.join(token_l[1:])))  # カンマやピリオドの前の空白を削除
+    outStr = re.sub(r' ([,.;:?!])', r'\1', ' '.join(token_l[1:]))  # カンマやピリオドの前の空白を削除
+    outStr = outStr.replace('-LRB- ', '(').replace(' -RRB-', ')')  # ()に戻す
+    print(outStr)
