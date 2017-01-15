@@ -13,15 +13,19 @@ for dependency in dependencies:
     check_dic = defaultdict(list)
     for dep in dependency['dep']:
         dt = dep['@type']
-        dgi = dep['governor']['@idx']
+        dgi, ddi = dep['governor']['@idx'], dep['dependent']['@idx']
         dgt, ddt = dep['governor']['#text'], dep['dependent']['#text']
         if dt == 'nsubj' or dt == 'dobj':
+            if dt == 'nsubj':
+                check_dic[dgi].insert(0, int(ddi))  # 主語だったら出現位置を先頭に記録
             check_dic[dgi].append((dt, ddt, dgt))
 
-    # idx（述語の本文出現順）でソートして出力
-    for k, elem in sorted(check_dic.items(), key=lambda x: x[0]):
-        if len(elem) >= 2:  # nsubjとdobjの両方が存在している時
-            nsubj = [e[1] for e in elem if e[0] == 'nsubj'][0]
-            dobj = [e[1] for e in elem if e[0] == 'dobj'][0]
-            predicate = elem[0][2]
-            print(nsubj + '\t' + predicate + '\t' + dobj)
+    # [主語の出現位置, (dt, ddt, dgt), (dt, ddt, dgt)] と3つの要素が揃ってるものだけ抽出
+    out_dic = {k: v for k, v in check_dic.items() if len(v) >= 3}
+
+    # 主語の本文出現順 でソートして出力
+    for k, elem in sorted(out_dic.items(), key=lambda x: x[1][0]):
+        nsubj = [e[1] for e in elem[1:] if e[0] == 'nsubj'][0]
+        dobj = [e[1] for e in elem[1:] if e[0] == 'dobj'][0]
+        predicate = elem[1][2]  # elem[2][2] でもOK
+        print(nsubj + '\t' + predicate + '\t' + dobj)
