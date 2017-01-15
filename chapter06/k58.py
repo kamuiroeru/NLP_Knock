@@ -16,7 +16,6 @@ for dependency in dependencies:
         dgi = dep['governor']['@idx']
         dgt, ddt = dep['governor']['#text'], dep['dependent']['#text']
         if dt == 'nsubj' or dt == 'dobj':
-            # print(dgt, dt, ddt)
             check_dic[dgi].append((dt, ddt, dgt))
 
     # idx（述語の本文出現順）でソートして出力
