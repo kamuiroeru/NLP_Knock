@@ -6,8 +6,11 @@ sentence_list = [[]]  # インデックス調整の為予め1つ要素を入れ�
 
 for sentence in load_xml()['root']['document']['sentences']['sentence']:
     token_list = ['']  # インデックス調整の為（ｒｙ
+
+    # 13文目の為の処理
     if isinstance(sentence['tokens']['token'], dict):
         token_list.append(sentence['tokens']['token']['word'])
+
     else:
         for token in sentence['tokens']['token']:
             token_list.append(token['word'])
