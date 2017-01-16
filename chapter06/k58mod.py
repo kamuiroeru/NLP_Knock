@@ -22,7 +22,7 @@ for dependency in dependencies:
     out_dic = {k: v for k, v in check_dic.items() if len(v) >= 2}
 
     # 主語の本文出現順 でソートして出力
-    for k, elem in sorted(out_dic.items(), key=lambda x: x[0]):
+    for k, elem in sorted(out_dic.items(), key=lambda x: int(x[0])):
         nsubj = [e[1] for e in elem if e[0] == 'nsubj'][0]
         dobj = [e[1] for e in elem if e[0] == 'dobj'][0]
         predicate = elem[0][2]  # elem[2][2] でもOK
