@@ -12,5 +12,5 @@ while True:
             print(db.Get(key.encode()).decode())
     except KeyError:
         print('Error:そのKeyは存在しません')
-    except KeyboardInterrupt or EOFError:
+    except KeyboardInterrupt:
         exit()
