@@ -7,13 +7,12 @@ while True:
         key = input('>>>')
         if '--all' in key:
             for k, v in db.RangeIter():
-                lis = pickle.loads(v)
-                l = len(lis)
-                print(k.decode() + ' : ' + str(lis) + ' : ' + str(l))
+                for tags in pickle.loads(v):
+                    print(k.decode(), 'value: ' + tags['value'] + ', count: ' + str(tags['count']))
         else:
             lis = pickle.loads(db.Get(key.encode()))
-            l = len(lis)
-            print(lis, l)
+            for tags in lis:
+                print(key, 'value: ' + tags['value'] + ', count: ' + str(tags['count']))
     except KeyError:
         print('Error:そのKeyは存在しません')
     except KeyboardInterrupt:
