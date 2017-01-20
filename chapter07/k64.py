@@ -1,10 +1,7 @@
-import pymongo
+# 登録はmongoimportを使用
+# インデックス作成はMongoDBのインタラクティブシェルで
+# つまり…Python使ってません
 
-client = pymongo.MongoClient()
-db = client.test
-co = db.myCol
-
-co.delete_one({"test":3})
-
-for data in co.find():
-    print(data)
+print('登録はmongoimportを使用\n'
+      'インデックス作成はMongoDBのインタラクティブシェルで行う\n'
+      'つまり…Python使ってません')
