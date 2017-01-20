@@ -10,7 +10,5 @@ if __name__ == '__main__':
             s = input('>>>')
         except KeyboardInterrupt:
             exit(0)
-        # for data in col.find({'name': s}):
-        #     print(data)
-        for data in col.find({'aliases.name': s}, {'_id': 0}):
+        for data in col.find({'aliases.name': s}, {'_id': 0}):  # _idが出てくると鬱陶しいので除外
             pprint(data)
