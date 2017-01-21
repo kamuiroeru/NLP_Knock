@@ -1,0 +1,104 @@
+<root>
+    <id type="int">317</id>
+    <area type="str">United Kingdom</area>
+    <gid type="str">8538e728-ca0b-4321-b7e5-cff6565dd4c0</gid>
+    <aliases type="list">
+        <item type="dict">
+            <name type="str">DM</name>
+            <sort_name type="str">DM</sort_name>
+        </item>
+        <item type="dict">
+            <name type="str">Depech Mode</name>
+            <sort_name type="str">Depech Mode</sort_name>
+        </item>
+    </aliases>
+    <tags type="list">
+        <item type="dict">
+            <value type="str">electronica</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">post punk</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">alternative dance</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">electronic</value>
+            <count type="int">5</count>
+        </item>
+        <item type="dict">
+            <value type="str">dark wave</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">britannique</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">british</value>
+            <count type="int">4</count>
+        </item>
+        <item type="dict">
+            <value type="str">english</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">uk</value>
+            <count type="int">2</count>
+        </item>
+        <item type="dict">
+            <value type="str">rock and indie</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">synthpop</value>
+            <count type="int">5</count>
+        </item>
+        <item type="dict">
+            <value type="str">electronic rock</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">remix</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">producteur</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">producer</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">new wave</value>
+            <count type="int">2</count>
+        </item>
+        <item type="dict">
+            <value type="str">synth pop</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">alternative rock</value>
+            <count type="int">1</count>
+        </item>
+        <item type="dict">
+            <value type="str">barrel</value>
+            <count type="int">1</count>
+        </item>
+    </tags>
+    <type type="str">Group</type>
+    <name type="str">Depeche Mode</name>
+    <begin type="dict">
+        <year type="int">1980</year>
+    </begin>
+    <ended type="bool">True</ended>
+    <rating type="dict">
+        <value type="int">90</value>
+        <count type="int">27</count>
+    </rating>
+    <sort_name type="str">Depeche Mode</sort_name>
+</root>
