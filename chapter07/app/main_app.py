@@ -6,6 +6,7 @@ from bson.objectid import ObjectId
 
 sorted_rank = []
 total_count = 0
+col = pymongo.MongoClient()['my']['nlp100']
 
 
 @route('/')
@@ -20,7 +21,7 @@ def show_other_page(num: str):
 
 
 def show_part(start: int, ranking: list) -> str:
-    global total_count
+    global total_count, col
     start *= 10
     html_string = str(total_count) + '件ヒット<br><a href="/">トップへ戻る</a>\n'
     html_string += '<br>{}~{}件を表示<br><ul>'.format(start, start + 10)
@@ -54,8 +55,7 @@ def engine(name: str, genre: str, area: str) -> str:
                 query['$or'].append({'area': re.compile(area.rstrip(), re.IGNORECASE)})
     else:
         query = {forklist[0][0]: re.compile(forklist[0][1].rstrip(), re.IGNORECASE)}
-    col = pymongo.MongoClient()['my']['nlp100']
-    global total_count, sorted_rank
+    global total_count, sorted_rank, col
     total_count = col.count(query)
     print(total_count)
     if total_count > 50:
@@ -73,7 +73,8 @@ from dictToHTML import convert
 
 
 @route('/details/<idstr>')
-def details(idstr: str, col=pymongo.MongoClient()['my']['nlp100']):
+def details(idstr: str):
+    global col
     detail_dic = col.find_one({'_id': ObjectId(idstr)})
     detail_dic.pop('_id')
     html_str = convert(detail_dic)
