@@ -60,15 +60,15 @@ def convert(d: dict) -> str:
                 <body>\n'''.format(d['name'])
 
     ret_str += '<h1>{}</h1>\n'.format(d['name'])
-    ret_str += '<table border="0"><tr><td>'
+    ret_str += '<table border="0">\n<tr><td>'
 
     # dict -> html tableにする関数（このデータ専用）
     def hoge(lis: list) -> None:
         nonlocal ret_str
-        ret_str += '<table border="1">\n'
+        ret_str += '\n<table border="1">\n'
         for elem in lis:
             key, val = elem[0], elem[1]
-            ret_str += '<tr><td>{}</td><td>'.format(key)
+            ret_str += '\n<tr><td>{}</td><td>'.format(key)
             if key == 'tags':
                 inval = []
                 for data in val:
