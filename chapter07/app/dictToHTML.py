@@ -1,4 +1,4 @@
-import requests, json, threading
+import requests, json, threading, pickle
 from bs4 import BeautifulSoup
 from time import sleep
 import time
@@ -9,38 +9,45 @@ url = ''
 # google画像検索結果のトップの画像を表示させる。
 def getpic(name: str, type: str) -> None:
     global url
+    cache = pickle.load(open('cache.pickle', 'rb'))
+    url = cache.get(name)
+    if not url:
+        # ヘッダ情報（これがないと、画像のURLもらえない）
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
+        if type == 'Person':  # タイプが人の時、検索種類を「顔」に
+            payload = {'q': name, 'tbm': 'isch', 'tbs': 'itp:face'}
+        else:  # それ以外、検索種類を「写真」に
+            payload = {'q': name, 'tbm': 'isch', 'tbs': 'itp:photo'}
 
-    # ヘッダ情報（これがないと、画像のURLもらえない）
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
-    if type == 'Person':  # タイプが人の時、検索種類を「顔」に
-        payload = {'q': name, 'tbm': 'isch', 'tbs': 'itp:face'}
-    else:  # それ以外、検索種類を「写真」に
-        payload = {'q': name, 'tbm': 'isch', 'tbs': 'itp:photo'}
-
-    st = time.time()
-    r = requests.get('https://www.google.co.jp/search?', headers=headers, params=payload)
-    retry = 0
-    while r.status_code != 200 and retry < 3:  # 正常に取得できなければ、3回までやり直す
-        sleep(1)
+        st = time.time()
         r = requests.get('https://www.google.co.jp/search?', headers=headers, params=payload)
-        retry += 1
-    print(time.time() - st)
+        retry = 0
+        while r.status_code != 200 and retry < 3:  # 正常に取得できなければ、3回までやり直す
+            sleep(1)
+            r = requests.get('https://www.google.co.jp/search?', headers=headers, params=payload)
+            retry += 1
+        print(time.time() - st)
 
-    st = time.time()
-    s = r.content.decode().split('</head>')[1]  # </head>までの情報が多すぎてsoupの作成に時間がかかるのでカット
-    print(time.time() - st)
+        st = time.time()
+        s = r.content.decode().split('</head>')[1]  # </head>までの情報が多すぎてsoupの作成に時間がかかるのでカット
+        print(time.time() - st)
 
-    st = time.time()
-    soup = BeautifulSoup(s, 'html.parser')
-    print(time.time() - st)
+        st = time.time()
+        soup = BeautifulSoup(s, 'html.parser')
+        print(time.time() - st)
 
-    st = time.time()
-    data = soup.select('div .rg_meta')[0]  # 画像の詳細が詰まったリストの先頭
-    print(time.time() - st)
+        st = time.time()
+        data = soup.select('div .rg_meta')[0]  # 画像の詳細が詰まったリストの先頭
+        print(time.time() - st)
 
-    st = time.time()
-    url = json.loads(str(data.contents[0]))['ou']  # 画像の元データURL
-    print(time.time() - st)
+        st = time.time()
+        url = json.loads(str(data.contents[0]))['ou']  # 画像の元データURL
+        print(time.time() - st)
+
+        st = time.time()
+        cache[name] = url
+        pickle.dump(cache, open('cache.pickle', 'wb'))
+        print(time.time() - st)
 
 
 def convert(d: dict) -> str:

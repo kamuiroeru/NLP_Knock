@@ -5,7 +5,6 @@ import pymongo, re
 from bson.objectid import ObjectId
 from dictToHTML import convert
 
-
 # グローバル変数
 sorted_rank = []
 total_count = 0
@@ -99,12 +98,18 @@ def details(idstr: str):
     return template(html_str)
 
 
-
-
 # @error(404)
 # def error404(error):
 #     return template("404")
 
+import pickle
 
 if __name__ == '__main__':
+
+    # キャッシュファイルが無い時新規作成
+    try:
+        open('cache.pickle', 'rb')
+    except FileNotFoundError:
+        pickle.dump({}, open('cache.pickle', 'wb'))
+
     run(host="localhost", port=8000, debug=True, reloader=True)
