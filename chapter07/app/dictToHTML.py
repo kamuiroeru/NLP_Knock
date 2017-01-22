@@ -47,7 +47,7 @@ def convert(d: dict) -> str:
     name = d['name']
 
     # マルチスレッド開始
-    thread1 = threading.Thread(target=getpic, args=(name, d['type']))
+    thread1 = threading.Thread(target=getpic, args=(name, d.get('type') or 'Unknown'))
     thread1.start()
 
     st = time.time()
