@@ -1,28 +1,56 @@
 import requests, json, threading
 from bs4 import BeautifulSoup
 from time import sleep
+import time
 
 url = ''
 
 
-def getpic(name: str) -> None:
+# google画像検索結果のトップの画像を表示させる。
+def getpic(name: str, type: str) -> None:
     global url
+
+    # ヘッダ情報（これがないと、画像のURLもらえない）
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0'}
-    payload = {'q': name, 'tbm': 'isch', 'tbs': 'itp:face'}
+    if type == 'Person':  # タイプが人の時、検索種類を「顔」に
+        payload = {'q': name, 'tbm': 'isch', 'tbs': 'itp:face'}
+    else:  # それ以外、検索種類を「写真」に
+        payload = {'q': name, 'tbm': 'isch', 'tbs': 'itp:photo'}
+
+    st = time.time()
     r = requests.get('https://www.google.co.jp/search?', headers=headers, params=payload)
-    while r.status_code != 200:
+    retry = 0
+    while r.status_code != 200 and retry < 3:  # 正常に取得できなければ、3回までやり直す
         sleep(1)
         r = requests.get('https://www.google.co.jp/search?', headers=headers, params=payload)
+        retry += 1
+    print(time.time() - st)
 
-    soup = BeautifulSoup(r.content, 'html.parser')
-    data = soup.select('div .rg_meta')[0]
-    url = json.loads(str(data.contents[0]))['ou']
+    st = time.time()
+    s = r.content.decode().split('</head>')[1]  # </head>までの情報が多すぎてsoupの作成に時間がかかるのでカット
+    print(time.time() - st)
+
+    st = time.time()
+    soup = BeautifulSoup(s, 'html.parser')
+    print(time.time() - st)
+
+    st = time.time()
+    data = soup.select('div .rg_meta')[0]  # 画像の詳細が詰まったリストの先頭
+    print(time.time() - st)
+
+    st = time.time()
+    url = json.loads(str(data.contents[0]))['ou']  # 画像の元データURL
+    print(time.time() - st)
 
 
 def convert(d: dict) -> str:
     name = d['name']
-    thread1 = threading.Thread(target=getpic, args=(name,))
+
+    # マルチスレッド開始
+    thread1 = threading.Thread(target=getpic, args=(name, d['type']))
     thread1.start()
+
+    st = time.time()
     ret_str = '''<!DOCTYPE html>
                 <html lang="ja">
                 <head>
@@ -34,6 +62,7 @@ def convert(d: dict) -> str:
     ret_str += '<h1>{}</h1>\n'.format(d['name'])
     ret_str += '<table border="0"><tr><td>'
 
+    # dict -> html tableにする関数（このデータ専用）
     def hoge(lis: list) -> None:
         nonlocal ret_str
         ret_str += '<table border="1">\n'
@@ -69,8 +98,9 @@ def convert(d: dict) -> str:
 
     d = [(k, v) for k, v in d.items()]
     hoge(d)
+    print('main: ' + str(time.time() - st))
 
-    thread1.join()
+    thread1.join()  # 写真のURLが取れるのを待つ
     global url
     ret_str += '''</td>
         <td valign="top">
