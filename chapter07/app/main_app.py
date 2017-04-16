@@ -52,6 +52,10 @@ def engine(name: str, genre: str, area: str) -> str:
         ranking = {data['_id']: data['rating']['count'] for data in hit_data if data.get('rating')}
         sorted_rank = sorted(ranking.items(), key=lambda x: x[1], reverse=True)  # レーティング数が多いもの順
         total_count = len(sorted_rank)  # 検索個数を修正
+    # elif total_count == 1:
+    #     idstr = hit_data.next()['_id']
+    #     route('/details/' + str(idstr), )
+        # details(str(idstr))
     else:
         sorted_rank = [(data['_id'], data['name']) for data in hit_data]  # そのまま吐き出す
     return show_part(0, sorted_rank)
@@ -101,6 +105,11 @@ def details(idstr: str):
 # @error(404)
 # def error404(error):
 #     return template("404")
+
+@route('/hoge/<name>')
+def hoge(name: str):
+    huga = '<h1>pyo</h1>'
+    return template('hoge', {'baka': huga})
 
 import pickle
 
