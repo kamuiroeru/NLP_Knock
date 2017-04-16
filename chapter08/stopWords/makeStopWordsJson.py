@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
             if ret_extention(fileName) == 'txt':
                 inList = [line.rstrip() for line in open(fileName)]
-                outDic[fileName] = inList
+                outDic[fileName.split('.')[0]] = inList  # 拡張子抜きでキーに
 
             elif ret_extention(fileName) == 'csv':
                 inList = [line.rstrip().split(',') for line in open(fileName)]
