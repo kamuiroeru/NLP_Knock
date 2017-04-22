@@ -5,7 +5,7 @@ import pickle
 dic = pickle.load(open('model.pkl', 'rb'))
 
 
-def likelihood(inputobj) -> tuple:
+def likelihood(inputobj: {str, list, tuple}) -> tuple:
     """リストかスペース区切りのstrを読み込んで、(正解極性ラベル, 予測確率)のタプルを返す。"""
 
     numofsum = 0.0  # 重みの合計
