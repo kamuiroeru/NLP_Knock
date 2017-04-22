@@ -1,39 +1,49 @@
 from k72 import remove_waste
-from k73 import *
+from k73 import sigmoid
+import pickle
+
+dic = pickle.load(open('model.pkl', 'rb'))
+
+
+def likelihood(inputobj) -> tuple:
+    """リストかスペース区切りのstrを読み込んで、(正解極性ラベル, 予測確率)のタプルを返す。"""
+
+    numofsum = 0.0  # 重みの合計
+
+    #  入力がstrだった時の処理
+    if isinstance(inputobj, str):
+        inputobj = inputobj.split(' ')
+
+    for word in inputobj[1:]:
+        numofsum += dic[word]
+    return inputobj[0], sigmoid(numofsum)
+
 
 if __name__ == '__main__':
-    inputList = []
-    for line in open('sentiment.txt'):
-        lineSplit = line.rstrip().split(' ')
-        inputList.append(' '.join([lineSplit[0]] + remove_waste(lineSplit[1:])))
-    dic = train(inputList)
-    # print(dic)
+    from sys import argv
+    from subprocess import getoutput
+    from argparse import ArgumentParser
 
-    border = 0.5  # 境界
-    correct = 0  # 正解数
-    corPos = 0
-    corNeg = 0
+    parse = ArgumentParser()
+    parse.add_argument('--input', '-i', help='input filename', default='sentiment.txt')
+    parse.add_argument('--num', '-n', help='line number', default=1, type=int)
+    parse.add_argument('--raw', '-r', help='use raw string', default=False, action='store_true')
+    args = parse.parse_args()
 
-    for sentence in inputList:
-        sentList = sentence.split(' ')
-        likelihood = 0.0  # 重みの合計
-        for word in sentList[1:]:
-            likelihood += dic[word]
-        if sigmoid(likelihood) > border:
-            result = '+1'
+    instr = ''
+    try:
+        if args.raw:
+            instr = argv[-1]
+            if instr == '-r':
+                raise IndexError
         else:
-            result = '-1'
+            instr = getoutput('head -n{} {}|tail -n1'.format(args.num, args.input))
+    except IndexError:
+        print('入力がありません。')
+        exit(1)
 
-        if sentList[0] == result:
-            correct += 1
-            if result == '+1':
-                corPos += 1
-            else:
-                corNeg += 1
+    inlist = instr.split(' ')
 
-        if not 0.0 < sigmoid(likelihood) < 1:
-            print('hoge')
-
-    print('Positive正解率：{}'.format(corPos / (len(inputList) / 2)))
-    print('Negative正解率：{}'.format(corNeg / (len(inputList) / 2)))
-    print('合計正解率：{}'.format(correct / len(inputList)))
+    print('input: "{}"\n'.format(instr))
+    print('words: {}\n'.format(remove_waste(inlist[1:])))
+    print('ans:', *likelihood(inlist + remove_waste(inlist[1:])))
