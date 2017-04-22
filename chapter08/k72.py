@@ -64,9 +64,9 @@ def dump_tfidf():
     tfidfList = []
     for dic in tfList:
         indic = {}
-        for word, tf in dic.items():
+        for word, tfVal in dic.items():
             thisIdf = idf(word, tfList)
-            indic[word] = tf * thisIdf
+            indic[word] = tfVal * thisIdf
         tfidfList.append(indic)
     print('tfidf List complete : {} [sec]'.format(time() - start))
 
@@ -98,3 +98,5 @@ def dump_tfidf():
 
     print('posneg rankup compete : {} [sec]'.format(time() - start))
 
+if __name__ == '__main__':
+    dump_tfidf()
