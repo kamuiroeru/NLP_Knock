@@ -3,7 +3,7 @@ import chainer.functions as F
 import chainer.links as L
 import numpy as np
 
-from k74 import inputList
+from k76 import inputList
 from time import time
 
 import os

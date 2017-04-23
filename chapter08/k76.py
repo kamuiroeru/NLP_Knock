@@ -11,5 +11,5 @@ if __name__ == '__main__':
     border = 0.5  # 境界
 
     for sentence in inputList:
-        res, odds = likelihood(sentence)
-        print('{}\t{}\t{}'.format(res, '+1' if odds > border else '-1', odds))
+        ans, odds = likelihood(sentence)
+        print('{}\t{}\t{}'.format(ans, '+1' if odds > border else '-1', odds))

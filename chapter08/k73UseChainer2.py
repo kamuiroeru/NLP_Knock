@@ -9,7 +9,7 @@ from chainer.functions.loss.mean_squared_error import mean_squared_error
 from time import time
 start = time()
 
-from k74 import inputList
+from k76 import inputList
 
 # import os
 #
