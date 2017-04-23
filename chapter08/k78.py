@@ -16,12 +16,12 @@ if __name__ == '__main__':
     splitList = splitList[:-1]
     print('{}分割交差検定を開始します。'.format(len(splitList)))
 
-    rocas, precisions, recalls, F_measures = np.zeros(k * 4).reshape(4, k)
+    rocas, precisions, recalls, F_measures = np.zeros(k * 4).reshape(4, k)  # それぞれk個の要素を持ったnp.arrayである
 
     for i in range(k):
         print('i = ' + str(i))
         testList = splitList[i]
-        trainList = [line for l in splitList[:i] + splitList[i + 1:] for line in l]
+        trainList = [line for l in splitList[:i] + splitList[i + 1:] for line in l]  # flatten
 
         wdic = train(trainList)
 
