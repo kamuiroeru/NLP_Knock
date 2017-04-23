@@ -12,4 +12,4 @@ if __name__ == '__main__':
 
     for sentence in inputList:
         ans, odds = likelihood(sentence)
-        print('{}\t{}\t{}'.format(ans, '+1' if odds > border else '-1', odds))
+        print(*(ans, '+1' if odds > border else '-1', odds), sep='\t')
