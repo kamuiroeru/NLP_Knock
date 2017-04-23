@@ -16,7 +16,7 @@ if __name__ == '__main__':
     splitList = splitList[:-1]
     print('{}分割交差検定を開始します。'.format(len(splitList)))
 
-    rocas, precisions, recalls, F_measures = np.zeros(k * 4).reshape(4, k)  # それぞれk個の要素を持ったnp.arrayである
+    accuracys, precisions, recalls, F_measures = np.zeros(k * 4).reshape(4, k)  # それぞれk個の要素を持ったnp.arrayである
 
     for i in range(k):
         print('i = ' + str(i))
@@ -31,10 +31,10 @@ if __name__ == '__main__':
             prediction = '+1' if odds > border else '-1'
             paramdic[classify('{}\t{}\t{}'.format(ans, prediction, odds))] += 1
 
-        rocas[i], precisions[i], recalls[i], F_measures[i] \
+        accuracys[i], precisions[i], recalls[i], F_measures[i] \
             = ret_score(*map(lambda x: paramdic[x], ['TP', 'FP', 'TN', 'FN']))
 
-    print('正解率:\t{}'.format(np.average(rocas)))
+    print('正解率:\t{}'.format(np.average(accuracys)))
     print('適合率:\t{}'.format(np.average(precisions)))
     print('再現率:\t{}'.format(np.average(recalls)))
     print('F1スコア:\t{}'.format(np.average(F_measures)))
