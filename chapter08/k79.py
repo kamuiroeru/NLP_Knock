@@ -16,16 +16,17 @@ def classify_neo(ans, odds, border) -> str:
         return 'TN' if int(ans) < 0 else 'FN'
 
 
+#  seaborn使って見た目を変更
 sns.set_style('whitegrid')
 sns.set_context('talk', 1.5, {"lines.linewidth": 5})
 
-resolution = 10
+resolution = 10  # 分解能
 
-indf = pd.read_table('k76output.txt', header=None)
+indf = pd.read_table('k76output.txt', header=None)  # pandas使ってtsvを読む
 indf.columns = ['ans', 'prediction', 'odds']
-print(indf)
+# print(indf)
 
-x = np.arange(0, 1, 1 / resolution)
+x = np.arange(0, 1, 1 / resolution)  # 0 ~ 1をresolution数分割する
 accuracys, precisions, recalls, F_measures = np.zeros(len(x) * 4).reshape(4, len(x))
 
 for lc, border in enumerate(x):
@@ -43,4 +44,5 @@ p2 = plt.plot(x, recalls)
 # p4 = plt.plot(x, F_measures)
 # plt.legend((p1[0], p2[0], p3[0], p4[0]), ('presicion', 'recall', 'accuracy', 'F_measure'), loc='best')
 plt.legend((p1[0], p2[0]), ('presicion', 'recall'), loc='best')
+plt.xlabel('border')
 plt.show()
