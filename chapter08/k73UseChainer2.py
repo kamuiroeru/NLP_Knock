@@ -67,8 +67,8 @@ test_iter = iterators.SerialIterator(train, batchsize, repeat=False, shuffle=Fal
 from chainer.functions.loss.mean_squared_error import mean_squared_error
 
 # モデル作成
-model = L.Classifier(MyChain(), lossfun=mean_squared_error)
-# model = L.Classifier(MyChain())
+# model = L.Classifier(MyChain(), lossfun=mean_squared_error)
+model = L.Classifier(MyChain())
 
 optimizer = optimizers.SGD()
 optimizer.setup(model)
