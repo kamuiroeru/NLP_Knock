@@ -10,7 +10,7 @@ def classify_neo(ans, odds, border) -> str:
     """正解と予測確率としきい値を与えると、TP, FP, TN, FNのいずれかを返す"""
 
     odds = float(odds)
-    if odds >= border:
+    if odds > border:
         return 'TP' if int(ans) > 0 else 'FP'
     else:
         return 'TN' if int(ans) < 0 else 'FN'
@@ -27,7 +27,7 @@ indf.columns = ['ans', 'prediction', 'odds']
 # print(indf)
 
 x = np.arange(0, 1, 1 / resolution)  # 0 ~ 1をresolution数分割する
-accuracys, precisions, recalls, F_measures = np.zeros(len(x) * 4).reshape(4, len(x))
+accuracys, presicions, recalls, F_measures = np.zeros(len(x) * 4).reshape(4, len(x))
 
 for lc, border in enumerate(x):
     print('calculating: border ' + str(border))
@@ -35,14 +35,20 @@ for lc, border in enumerate(x):
     for key, obj in indf.iterrows():
         tempdic[classify_neo(obj['ans'], obj['odds'], border)] += 1
 
-    accuracys[lc], precisions[lc], recalls[lc], F_measures[lc] = \
+    accuracys[lc], presicions[lc], recalls[lc], F_measures[lc] = \
         ret_score(*map(lambda label: tempdic[label], ['TP', 'FP', 'TN', 'FN']))
 
-p1 = plt.plot(x, precisions)
-p2 = plt.plot(x, recalls)
+# p1 = plt.plot(x, presicions)
+# p2 = plt.plot(x, recalls)
 # p3 = plt.plot(x, accuracys)
 # p4 = plt.plot(x, F_measures)
 # plt.legend((p1[0], p2[0], p3[0], p4[0]), ('presicion', 'recall', 'accuracy', 'F_measure'), loc='best')
-plt.legend((p1[0], p2[0]), ('presicion', 'recall'), loc='best')
-plt.xlabel('border')
+# plt.legend((p1[0], p2[0]), ('precision', 'recall'), loc='best')
+
+# plt.scatter(recalls, presicions, s=100)
+plt.plot(recalls, presicions, marker='o', markersize=12)
+for r, p in zip(recalls, presicions):
+    plt.annotate('({0:0<3f}, {1:0<3f})'.format(r, p), xy=(r, p))
+plt.xlabel('recall')
+plt.ylabel('presiction')
 plt.show()
