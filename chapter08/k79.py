@@ -48,7 +48,9 @@ for lc, border in enumerate(x):
 # plt.scatter(recalls, presicions, s=100)
 plt.plot(recalls, presicions, marker='o', markersize=12)
 for r, p in zip(recalls, presicions):
-    plt.annotate('({0:0<3f}, {1:0<3f})'.format(r, p), xy=(r, p))
+    plt.annotate('({}, {})'.format(*np.round([r, p], 3)), xy=(r, p))
 plt.xlabel('recall')
 plt.ylabel('presiction')
+plt.xlim(0.2, 1.2)
+plt.ylim(0.4, 1.1)
 plt.show()
