@@ -1,8 +1,7 @@
 import pickle
-from scipy.sparse import lil_matrix, csr_matrix, linalg
+from scipy.sparse import lil_matrix
 import numpy as np
 from sklearn.decomposition import TruncatedSVD, PCA
-from scipy import io
 from time import time
 
 start = time()
