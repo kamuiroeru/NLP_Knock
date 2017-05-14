@@ -10,17 +10,18 @@ def cosine(x, y):
     return x.dot(y) / normX / normY
 
 
-str1 = 'United_States'
-str2 = 'U.S'
+if __name__ == '__main__':
+    str1 = 'United_States'
+    str2 = 'U.S'
 
-if len(argv) == 3:
-    str1 = argv[1]
-    str2 = argv[2]
+    if len(argv) == 3:
+        str1 = argv[1]
+        str2 = argv[2]
 
-result = np.load('result.npz')
-label = pickle.load(open('label.pkl', 'rb'))
+    result = np.load('result.npz')
+    label = pickle.load(open('label.pkl', 'rb'))
 
-x = result[label[str1]]
-y = result[label[str2]]
-print('「{}」と「{}」のcosine類似度は{:0.2f}'
-      .format(str1, str2, cosine(x, y)))
+    x = result[label[str1]]
+    y = result[label[str2]]
+    print('「{}」と「{}」のcosine類似度は{:0.2f}'
+          .format(str1, str2, cosine(x, y)))
