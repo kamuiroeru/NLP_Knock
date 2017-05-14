@@ -1,7 +1,6 @@
 import numpy as np
 import pickle
 from k87 import cosine
-from pprint import pprint
 
 result = np.load('result.npy')
 label = pickle.load(open('label.pkl', 'rb'))
@@ -22,8 +21,11 @@ if __name__ == '__main__':
     from sys import argv
 
     if len(argv) == 2:
-        array = argv[1]
+        array = result[label[argv[1]]]
 
     checkDic = procedure()
 
-    pprint(sorted(checkDic, key=lambda x: x[1], reverse=True)[1:11])
+    best10 = sorted(checkDic, key=lambda x: x[1], reverse=True)[1:11]
+
+    for word, cos in best10:
+        print('{}\t\t{:0.2f}'.format(word, cos))
