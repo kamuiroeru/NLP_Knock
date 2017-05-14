@@ -1,3 +1,5 @@
+# 特異値分解してから主成分分析してたのでボツ
+
 import numpy as np
 import pickle
 from k87 import cosine

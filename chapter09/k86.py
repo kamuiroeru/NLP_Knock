@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 
-result = np.load('result.npy')
+decompMat = np.load('decompMat.npy')
 label = pickle.load(open('label.pkl', 'rb'))
 
-print(result[label['United_States']])
+print(decompMat[label['United_States']])
