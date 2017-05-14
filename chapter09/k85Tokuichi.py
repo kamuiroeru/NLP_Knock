@@ -39,5 +39,5 @@ print('圧縮後の行列:{} × {}'.format(*result.shape))
 
 start = time()
 print('savingResult')
-np.savez('result', result)
+np.save('result', result)
 print('Done {} [sec]'.format(time() - start))
