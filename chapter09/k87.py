@@ -18,7 +18,7 @@ if __name__ == '__main__':
         str1 = argv[1]
         str2 = argv[2]
 
-    result = np.load('result.npz')
+    result = np.load('result.npy')
     label = pickle.load(open('label.pkl', 'rb'))
 
     x = result[label[str1]]
