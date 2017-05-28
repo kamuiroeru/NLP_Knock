@@ -45,40 +45,59 @@ def main(instr):
     print()
 
 
-n = 5
-from sys import argv
-if len(argv) == 2:
-    n = int(argv[1])
+if __name__ == '__main__':
+    n = 5
+    from sys import argv
+    if len(argv) == 2:
+        n = int(argv[1])
 
-import sys
-import code
-import readline
-import atexit
-import os
+    print('k86: vector of "United_States"')
+    print(model['United_States'])
+    print()
 
-class MyConsole(code.InteractiveConsole):
-    def __init__(self, local=None, filename="<console>",
-                 histfile=os.path.expanduser("~/.console-history")):
-        code.InteractiveConsole.__init__(self, local, filename)
-        self.init_history(histfile)
+    from sys import path
+    path.append('../chapter09')
+    from k87 import cosine
+    print('k87: cosine of "United_States" and "U.S"')
+    print(cosine(model['United_States'], model['U.S']))
+    print()
 
-    def init_history(self, histfile):
-        readline.parse_and_bind("tab: complete")
-        if hasattr(readline, "read_history_file"):
-            try:
-                readline.read_history_file(histfile)
-            except IOError:
-                pass
-            atexit.register(self.save_history, histfile)
+    print('k88: cosine of "England" top 10')
+    n = 10
+    print(main('England'))
+    print()
 
-    def save_history(self, histfile):
-        readline.write_history_file(histfile)
+    print('k89: cosine of ["Spain" - "Madrid" + "Athens"] top 10')
+    print(main('Spain - Madrid + Athens'))
 
-    def push(self, line):
-        main(line)
-
-
-my_console = MyConsole()
-sys.ps1 = ">> "
-sys.ps2 = "------>> "
-my_console.interact('### Lets word2vec ###')
+    # import sys
+    # import code
+    # import readline
+    # import atexit
+    # import os
+    #
+    # class MyConsole(code.InteractiveConsole):
+    #     def __init__(self, local=None, filename="<console>",
+    #                  histfile=os.path.expanduser("~/.console-history")):
+    #         code.InteractiveConsole.__init__(self, local, filename)
+    #         self.init_history(histfile)
+    #
+    #     def init_history(self, histfile):
+    #         readline.parse_and_bind("tab: complete")
+    #         if hasattr(readline, "read_history_file"):
+    #             try:
+    #                 readline.read_history_file(histfile)
+    #             except IOError:
+    #                 pass
+    #             atexit.register(self.save_history, histfile)
+    #
+    #     def save_history(self, histfile):
+    #         readline.write_history_file(histfile)
+    #
+    #     def push(self, line):
+    #         main(line)
+    #
+    # my_console = MyConsole()
+    # sys.ps1 = ">> "
+    # sys.ps2 = "------>> "
+    # my_console.interact('### Lets word2vec ###')
