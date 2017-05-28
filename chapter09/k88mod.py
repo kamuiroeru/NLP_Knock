@@ -2,8 +2,8 @@ import numpy as np
 import pickle
 from k87 import cosine
 
-decompMat = np.load('decompMat.npy')
-label = pickle.load(open('label.pkl', 'rb'))
+decompMat = np.load('../chapter09/decompMat.npy')
+label = pickle.load(open('../chapter09/label.pkl', 'rb'))
 
 array = decompMat[label['England']]
 
