@@ -1,16 +1,17 @@
-def ngram(self='NoString', n=1):
+def n_gram(s, n):
     if n == 0:
         print('Can\'t make 0-gram')
         return None
     else:
-        end = len(self) - n + 1
+        end = len(s) - n + 1
         i = 0
         l = []
         while i < end:
-            l.append(self[i:i + n])
+            l.append(s[i:i + n])
             i += 1
         return l
 
 
 if __name__ == '__main__':
-    print(ngram('I am an NLPer.', 2))
+    print(n_gram('I am an NLPer.'.split(' '), 2))  # 単語bi-gram
+    print(n_gram('I am an NLPer.', 2))  # 文字bi-gram

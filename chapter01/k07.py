@@ -1,5 +1,6 @@
 def ret_char(x=10, y='おやつのポン・デ・リング', z='神'):
-    return ('{0}時の{1}は{2}'.format(x, y, z))
+    return '{}時の{}は{}'.format(x, y, z)
+    # 3.6 以降なら return f'{x}時の{y}は{z}' でOK
 
 
 if __name__ == '__main__':
