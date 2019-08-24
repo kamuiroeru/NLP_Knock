@@ -11,9 +11,8 @@ keys = pickle.load(open('countryNames.pkl', 'rb'))
 vectors = pickle.load(open('countryVectors.pkl', 'rb'))
 
 result = ward(vectors)
-dendrogram(result, labels=keys, leaf_font_size=20)
+ddg = dendrogram(result, labels=keys, leaf_font_size=20)
+pickle.dump(ddg, open('ddg.pkl', 'wb'))
 
 plt.savefig('ward.pdf', bbox_inches="tight", pad_inches=0.1)
-# plt.show()
-
-# ['ivl', 'leaves', 'dcoord', 'icoord', 'color_list']
+plt.show()

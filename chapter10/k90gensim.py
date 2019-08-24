@@ -70,6 +70,7 @@ if __name__ == '__main__':
     print('k89: cosine of ["Spain" - "Madrid" + "Athens"] top 10')
     print(main('Spain - Madrid + Athens'))
 
+# インタラクティブモード(-i) で起動させればOKなので以下は不要
     # import sys
     # import code
     # import readline

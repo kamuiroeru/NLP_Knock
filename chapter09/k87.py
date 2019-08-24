@@ -7,7 +7,7 @@ def cosine(x, y):
     if x.any() and y.any():
         normX = np.linalg.norm(x)
         normY = np.linalg.norm(y)
-        return x.dot(y) / normX / normY
+        return x.dot(y) / (normX * normY)
     else:
         return 0
 

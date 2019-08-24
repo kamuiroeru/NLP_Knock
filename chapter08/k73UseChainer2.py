@@ -6,43 +6,8 @@ from chainer.training import extensions
 from chainer.datasets.tuple_dataset import TupleDataset
 from chainer.functions.loss.mean_squared_error import mean_squared_error
 
-from time import time
-start = time()
-
-from k76 import inputList
-
-# import os
-#
-# os.environ["CHAINER_TYPE_CHECK"] = "0"
-
-
-numof_sentence = len(inputList)  # 入力文の数 : number of sentence
-# train_y = np.zeros(numof_sentence, dtype=np.int32).reshape(numof_sentence, 1)  # 教師データ
-train_y = np.zeros(numof_sentence, dtype=np.int32)
-
-hashDic = {}
-for sentence, num in zip(inputList, range(numof_sentence)):
-    sentence = sentence.split(' ')  # 単語ごとに区切る（先頭は +1 or -1）
-    train_y[num] = 1 if sentence[0] == '+1' else 0
-    for word in sentence[1:]:
-        hashDic[word] = 0
-
-for key, idNumber in zip(hashDic, np.random.permutation(len(hashDic))):
-    hashDic[key] = idNumber
-
-numof_word = len(hashDic)
-
-# 入力文の数 * 素性数 の 行列を作成 ( 10662 * 15415 ）
-train_x = np.zeros(numof_sentence * numof_word, dtype=np.float32).reshape(numof_sentence, numof_word)
-for sentence, num in zip(inputList, range(numof_sentence)):
-    sentence = sentence.split(' ')[1:]
-    for word in sentence:
-        train_x[num][hashDic[word]] = 1
-
 # train = np.hstack((train_x, train_y))
-train = TupleDataset(train_x, train_y)
-
-print('complete initialize : {} [sec]', format(time() - start))
+train = TupleDataset(np.load('data/train_x_2017_05_07__19_39_15.npy'), np.load('data/train_y_2017_05_07__19_39_15.npy'))
 
 
 class MyChain(Chain):
@@ -59,7 +24,7 @@ class MyChain(Chain):
 
 
 batchsize = 1000
-numof_epoch = 100
+numof_epoch = 10
 
 train_iter = iterators.SerialIterator(train, batchsize)
 test_iter = iterators.SerialIterator(train, batchsize, repeat=False, shuffle=False)
@@ -70,26 +35,56 @@ from chainer.functions.loss.mean_squared_error import mean_squared_error
 # model = L.Classifier(MyChain(), lossfun=mean_squared_error)
 model = L.Classifier(MyChain())
 
-optimizer = optimizers.SGD()
+# optimizer = optimizers.SGD()
+optimizer = optimizers.Adam()
 optimizer.setup(model)
 
 updater = training.StandardUpdater(train_iter, optimizer)
-trainer = training.Trainer(updater, (numof_epoch, 'epoch'))
+
+from datetime import datetime
+
+datestr = datetime.now().strftime("%Y_%m_%d__%H_%M_%S")
+
+trainer = training.Trainer(updater, (numof_epoch, 'epoch'), out='result/' + datestr)
+
+import pickle
+
+hashDic = pickle.load(open('./data/hashDic.pkl', 'rb'))
+
+
+@training.make_extension(trigger=(5, 'epoch'), default_name='predict')
+def predict(trainer):
+    wrongs = [('x', 'y', 'ans')]
+    for x, ans in train:
+        y = model.predictor(x.reshape(1, 15415))
+        y = F.sigmoid(y).data.argmax()
+        if y != ans:
+            wrongs.append((x, y, ans))
+    pickle.dump(wrongs, open(trainer.out + '/wrongs_{}.pkl'.format(trainer.updater.epoch), 'wb'))
 
 trainer.extend(extensions.Evaluator(test_iter, model))
 # これはいる。test_iterを使ってepochごとに評価してる（と思う）
-trainer.extend(extensions.dump_graph('main/loss'))
+# trainer.extend(extensions.dump_graph('main/loss'))
 # ネットワークの形をグラフで表示できるようにdot形式で保存する。
-# trainer.extend(extensions.snapshot(), trigger=(numof_epoch, 'epoch'))
+# trainer.extend(extensions.snapshot(), trigger=(5, 'epoch'))
 # epochごとのtrainerの情報を保存する。それを読み込んで、途中から再開などができる。これけすと結構早くなったりした？
-trainer.extend(extensions.LogReport())
+trainer.extend(extensions.LogReport(trigger=(1, 'epoch')))
 # epochごとにlogをだす
 trainer.extend(extensions.PrintReport(
     ['epoch', 'main/loss', 'validation/main/loss',
      'main/accuracy', 'validation/main/accuracy']))
+
 # logで出す情報を指定する。
+
+import matplotlib
+
+trainer.extend(extensions.PlotReport(['main/accuracy', 'main/loss', 'validation/main/loss',
+                                      'main/accuracy', 'validation/main/accuracy']))
+
 trainer.extend(extensions.ProgressBar())
 # 今全体と、epochごとでどのぐらい進んでいるかを教えてくれる。
+
+trainer.extend(predict)
 
 trainer.run()
 # trainerをいろいろ設定した後、これをやって実際に実行する。これは必須
